@@ -2,8 +2,9 @@ require_relative 'p05_hash_map'
 require_relative 'p04_linked_list'
 
 class LRUCache
+  
   def initialize(max, prc)
-    @map = HashMap.new
+    @map = HashMap.new 
     @store = LinkedList.new
     @max = max
     @prc = prc
@@ -14,6 +15,24 @@ class LRUCache
   end
 
   def get(key)
+    if @map.include?(key)
+      value = @store.get(key)
+      @store.remove(key)
+      new_node = @store.append(key,value)
+      @map[key] = new_node
+    else
+      if count < @max
+        value = @prc.call(key)
+        new_node = @store.append(key,value)
+        @map[key] = new_node
+      else 
+        eject!
+        value = @prc.call(key)
+        new_node = @store.append(key,value)
+        @map[key] = new_node
+      end
+    end
+    value
   end
 
   def to_s
@@ -31,5 +50,7 @@ class LRUCache
   end
 
   def eject!
+    @map.delete(@store.first.key)
+    @store.remove(@store.first.key)
   end
 end

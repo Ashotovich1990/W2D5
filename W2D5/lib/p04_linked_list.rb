@@ -10,10 +10,6 @@ class Node
     @prev = nil
   end
 
-  def inspect
-    "#{self.object_id} #{self.key} - #{self.val} #{self.prev} #{self.next}"
-  end
-
   def to_s
     "#{@key}: #{@val}"
   end
@@ -77,8 +73,9 @@ class LinkedList
       @tail.prev.next = new_node
       @tail.prev = new_node 
       new_node.next = @tail
+      new_node
     end
-
+    new_node
   end
 
   def update(key, val)
@@ -101,8 +98,8 @@ class LinkedList
     end
   end
 
-  # uncomment when you have `each` working and `Enumerable` included
-  # def to_s
-  #   inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
-  # end
+  #uncomment when you have `each` working and `Enumerable` included
+  def to_s
+    inject([]) { |acc, link| acc << "[#{link.key}, #{link.val}]" }.join(", ")
+  end
 end
